@@ -2,7 +2,8 @@ package org.example.keynoteservice;
 
 import org.example.keynoteservice.Repository.KeynoteRepository;
 import org.example.keynoteservice.entity.Keynote;
-import org.example.keynoteservice.DTO.KeynoteDTO;
+import org.example.keynoteservice.DTO.KeynoteRequestDTO;
+import org.example.keynoteservice.DTO.KeynoteResponseDTO;
 import org.example.keynoteservice.service.KeynoteService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,27 +36,27 @@ public class KeynoteServiceApplication {
     @Bean
     CommandLineRunner commandLineRunnerUsingService(KeynoteService keynoteService) {
         return args -> {
-            KeynoteDTO dto1 = new KeynoteDTO();
+            KeynoteRequestDTO dto1 = new KeynoteRequestDTO();
             dto1.setNom("ServiceKhadir");
             dto1.setPrenom("Saad");
             dto1.setEmail("saad.service@example.com");
             dto1.setFonction("Speaker");
 
-            KeynoteDTO dto2 = new KeynoteDTO();
+            KeynoteRequestDTO dto2 = new KeynoteRequestDTO();
             dto2.setNom("ServiceDoe");
             dto2.setPrenom("John");
             dto2.setEmail("john.service@example.com");
             dto2.setFonction("Engineer");
 
-            KeynoteDTO dto3 = new KeynoteDTO();
+            KeynoteRequestDTO dto3 = new KeynoteRequestDTO();
             dto3.setNom("ServiceSmith");
             dto3.setPrenom("Anna");
             dto3.setEmail("anna.service@example.com");
             dto3.setFonction("Researcher");
 
-            KeynoteDTO created1 = keynoteService.create(dto1);
-            KeynoteDTO created2 = keynoteService.create(dto2);
-            KeynoteDTO created3 = keynoteService.create(dto3);
+            KeynoteResponseDTO created1 = keynoteService.create(dto1);
+            KeynoteResponseDTO created2 = keynoteService.create(dto2);
+            KeynoteResponseDTO created3 = keynoteService.create(dto3);
 
             System.out.println("Created via service IDs: " + created1.getId() + ", " + created2.getId() + ", " + created3.getId());
 

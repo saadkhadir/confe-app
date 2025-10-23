@@ -28,7 +28,5 @@ public class Review {
     private int stars;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "conference_id")
-    @JsonIgnore
     private Conference conference;
 }

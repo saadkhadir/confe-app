@@ -1,6 +1,7 @@
 package org.example.conferenceservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.conferenceservice.enums.Type;
+import org.example.conferenceservice.model.Keynote;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,7 +37,9 @@ public class Conference {
     private double score;
 
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("conference")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Review> reviews = new ArrayList<>();
 
+    @Transient
+    private Keynote keynote;
 }

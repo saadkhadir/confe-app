@@ -1,6 +1,7 @@
 package org.example.keynoteservice.RestController;
 
-import org.example.keynoteservice.DTO.KeynoteDTO;
+import org.example.keynoteservice.DTO.KeynoteRequestDTO;
+import org.example.keynoteservice.DTO.KeynoteResponseDTO;
 import org.example.keynoteservice.service.KeynoteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +20,23 @@ public class KeynoteController {
     }
 
     @PostMapping
-    public ResponseEntity<KeynoteDTO> create(@RequestBody KeynoteDTO dto) {
-        KeynoteDTO created = keynoteService.create(dto);
+    public ResponseEntity<KeynoteResponseDTO> create(@RequestBody KeynoteRequestDTO dto) {
+        KeynoteResponseDTO created = keynoteService.create(dto);
         return ResponseEntity.created(URI.create("/api/keynotes/" + created.getId())).body(created);
     }
 
     @GetMapping
-    public ResponseEntity<List<KeynoteDTO>> getAll() {
+    public ResponseEntity<List<KeynoteResponseDTO>> getAll() {
         return ResponseEntity.ok(keynoteService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<KeynoteDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<KeynoteResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(keynoteService.getById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<KeynoteDTO> update(@PathVariable Long id, @RequestBody KeynoteDTO dto) {
+    public ResponseEntity<KeynoteResponseDTO> update(@PathVariable Long id, @RequestBody KeynoteRequestDTO dto) {
         return ResponseEntity.ok(keynoteService.update(id, dto));
     }
 

@@ -1,6 +1,7 @@
 package org.example.keynoteservice.service;
 
-import org.example.keynoteservice.DTO.KeynoteDTO;
+import org.example.keynoteservice.DTO.KeynoteRequestDTO;
+import org.example.keynoteservice.DTO.KeynoteResponseDTO;
 import org.example.keynoteservice.Mappers.KeynoteMapper;
 import org.example.keynoteservice.Repository.KeynoteRepository;
 import org.example.keynoteservice.entity.Keynote;
@@ -18,33 +19,33 @@ public class KeynoteServiceImpl implements KeynoteService {
     }
 
     @Override
-    public KeynoteDTO create(KeynoteDTO keynoteDTO) {
+    public KeynoteResponseDTO create(KeynoteRequestDTO keynoteDTO) {
         Keynote entity = KeynoteMapper.toEntity(keynoteDTO);
         Keynote saved = repository.save(entity);
-        return KeynoteMapper.toDTO(saved);
+        return KeynoteMapper.toResponseDTO(saved);
     }
 
     @Override
-    public KeynoteDTO getById(Long id) {
+    public KeynoteResponseDTO getById(Long id) {
         return repository.findById(id)
-                .map(KeynoteMapper::toDTO)
+                .map(KeynoteMapper::toResponseDTO)
                 .orElseThrow(() -> new RuntimeException("Keynote not found: " + id));
     }
 
     @Override
-    public List<KeynoteDTO> getAll() {
+    public List<KeynoteResponseDTO> getAll() {
         return repository.findAll().stream()
-                .map(KeynoteMapper::toDTO)
+                .map(KeynoteMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public KeynoteDTO update(Long id, KeynoteDTO keynoteDTO) {
+    public KeynoteResponseDTO update(Long id, KeynoteRequestDTO keynoteDTO) {
         Keynote entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Keynote not found: " + id));
-        KeynoteMapper.updateEntityFromDTO(keynoteDTO, entity);
+        KeynoteMapper.updateEntityFromRequestDTO(keynoteDTO, entity);
         Keynote updated = repository.save(entity);
-        return KeynoteMapper.toDTO(updated);
+        return KeynoteMapper.toResponseDTO(updated);
     }
 
     @Override
