@@ -1,7 +1,9 @@
 package org.example.conferenceservice.Mappers;
 
-import org.example.conferenceservice.DTO.ConferenceDTO;
-import org.example.conferenceservice.DTO.ReviewDTO;
+import org.example.conferenceservice.DTO.ConferenceRequestDTO;
+import org.example.conferenceservice.DTO.ConferenceResponseDTO;
+import org.example.conferenceservice.DTO.ReviewRequestDTO;
+import org.example.conferenceservice.DTO.ReviewResponseDTO;
 import org.example.conferenceservice.entities.Conference;
 import org.example.conferenceservice.entities.Review;
 import org.example.conferenceservice.enums.Type;
@@ -19,13 +21,13 @@ public class ConferenceMapper {
         this.reviewMapper = reviewMapper;
     }
 
-    public ConferenceDTO toDTO(Conference conference) {
+    public ConferenceResponseDTO toDTO(Conference conference) {
         if (conference == null) return null;
-        ConferenceDTO dto = new ConferenceDTO();
+        ConferenceResponseDTO dto = new ConferenceResponseDTO();
         BeanUtils.copyProperties(conference, dto);
         dto.setType(conference.getType() != null ? conference.getType().name() : null);
         if (conference.getReviews() != null) {
-            List<ReviewDTO> reviews = conference.getReviews().stream()
+            List<ReviewResponseDTO> reviews = conference.getReviews().stream()
                     .map(reviewMapper::toDTO)
                     .collect(Collectors.toList());
             dto.setReviews(reviews);
@@ -33,7 +35,7 @@ public class ConferenceMapper {
         return dto;
     }
 
-    public Conference toEntity(ConferenceDTO dto) {
+    public Conference toEntity(ConferenceRequestDTO dto) {
         if (dto == null) return null;
         Conference conference = new Conference();
         BeanUtils.copyProperties(dto, conference);
@@ -43,13 +45,7 @@ public class ConferenceMapper {
             } catch (IllegalArgumentException ignored) {
             }
         }
-        if (dto.getReviews() != null) {
-            List<Review> reviews = dto.getReviews().stream()
-                    .map(reviewMapper::toEntity)
-                    .collect(Collectors.toList());
-            reviews.forEach(r -> r.setConference(conference));
-            conference.setReviews(reviews);
-        }
+        // reviews are not expected in request DTO; nothing to map
         return conference;
     }
 }

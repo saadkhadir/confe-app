@@ -1,14 +1,15 @@
 package org.example.conferenceservice.service;
 
-import org.example.conferenceservice.DTO.ReviewDTO;
+import org.example.conferenceservice.DTO.ReviewRequestDTO;
+import org.example.conferenceservice.DTO.ReviewResponseDTO;
 
 import java.util.List;
 
 public interface ReviewService {
-    ReviewDTO create(ReviewDTO reviewDTO);
-    ReviewDTO getById(Long id);
-    List<ReviewDTO> getAll();
-    ReviewDTO update(Long id, ReviewDTO reviewDTO);
+    ReviewResponseDTO create(ReviewRequestDTO reviewDTO);
+    ReviewResponseDTO getById(Long id);
+    List<ReviewResponseDTO> getAll();
+    ReviewResponseDTO update(Long id, ReviewRequestDTO reviewDTO);
     void delete(Long id);
-    List<ReviewDTO> getByConferenceId(Long conferenceId);
+    List<ReviewResponseDTO> getByConferenceId(Long conferenceId);
 }

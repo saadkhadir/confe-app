@@ -7,6 +7,5 @@ public class KeynoteRequestDTO {
     private Long id;
     private String nom;
     private String prenom;
-    private String email;
-    private String fonction;
+
 }

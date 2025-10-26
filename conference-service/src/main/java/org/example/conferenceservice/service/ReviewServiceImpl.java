@@ -1,6 +1,7 @@
 package org.example.conferenceservice.service;
 
-import org.example.conferenceservice.DTO.ReviewDTO;
+import org.example.conferenceservice.DTO.ReviewRequestDTO;
+import org.example.conferenceservice.DTO.ReviewResponseDTO;
 import org.example.conferenceservice.Mappers.ReviewMapper;
 import org.example.conferenceservice.Repository.ReviewRepository;
 import org.example.conferenceservice.entities.Conference;
@@ -29,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDTO create(ReviewDTO reviewDTO) {
+    public ReviewResponseDTO create(ReviewRequestDTO reviewDTO) {
         Review review = reviewMapper.toEntity(reviewDTO);
         if (review.getDate() == null) review.setDate(LocalDateTime.now());
         Review saved = reviewRepository.save(review);
@@ -37,14 +38,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDTO getById(Long id) {
+    public ReviewResponseDTO getById(Long id) {
         return reviewRepository.findById(id)
                 .map(reviewMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Review not found: " + id));
     }
 
     @Override
-    public List<ReviewDTO> getAll() {
+    public List<ReviewResponseDTO> getAll() {
         return reviewRepository.findAll().stream()
                 .map(reviewMapper::toDTO)
                 .collect(Collectors.toList());
@@ -52,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewDTO update(Long id, ReviewDTO reviewDTO) {
+    public ReviewResponseDTO update(Long id, ReviewRequestDTO reviewDTO) {
         Review entity = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found: " + id));
         // copy non-null properties from DTO to entity
@@ -72,7 +73,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDTO> getByConferenceId(Long conferenceId) {
+    public List<ReviewResponseDTO> getByConferenceId(Long conferenceId) {
         return reviewRepository.findByConferenceId(conferenceId).stream()
                 .map(reviewMapper::toDTO)
                 .collect(Collectors.toList());

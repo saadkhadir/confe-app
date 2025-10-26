@@ -1,7 +1,9 @@
 package org.example.conferenceservice.RestController;
 
-import org.example.conferenceservice.DTO.ConferenceDTO;
-import org.example.conferenceservice.DTO.ReviewDTO;
+import org.example.conferenceservice.DTO.ConferenceRequestDTO;
+import org.example.conferenceservice.DTO.ConferenceResponseDTO;
+import org.example.conferenceservice.DTO.ReviewRequestDTO;
+import org.example.conferenceservice.DTO.ReviewResponseDTO;
 import org.example.conferenceservice.service.ConferenceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +22,23 @@ public class ConferenceController {
     }
 
     @PostMapping
-    public ResponseEntity<ConferenceDTO> create(@RequestBody ConferenceDTO dto) {
-        ConferenceDTO created = conferenceService.create(dto);
+    public ResponseEntity<ConferenceResponseDTO> create(@RequestBody ConferenceRequestDTO dto) {
+        ConferenceResponseDTO created = conferenceService.create(dto);
         return ResponseEntity.created(URI.create("/api/conferences/" + created.getId())).body(created);
     }
 
     @GetMapping
-    public ResponseEntity<List<ConferenceDTO>> getAll() {
+    public ResponseEntity<List<ConferenceResponseDTO>> getAll() {
         return ResponseEntity.ok(conferenceService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConferenceDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<ConferenceResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(conferenceService.getById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConferenceDTO> update(@PathVariable Long id, @RequestBody ConferenceDTO dto) {
+    public ResponseEntity<ConferenceResponseDTO> update(@PathVariable Long id, @RequestBody ConferenceRequestDTO dto) {
         return ResponseEntity.ok(conferenceService.update(id, dto));
     }
 
@@ -47,14 +49,13 @@ public class ConferenceController {
     }
 
     @PostMapping("/{id}/reviews")
-    public ResponseEntity<ReviewDTO> addReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO) {
-        ReviewDTO created = conferenceService.addReview(id, reviewDTO);
+    public ResponseEntity<ReviewResponseDTO> addReview(@PathVariable Long id, @RequestBody ReviewRequestDTO reviewDTO) {
+        ReviewResponseDTO created = conferenceService.addReview(id, reviewDTO);
         return ResponseEntity.created(URI.create("/api/conferences/" + id + "/reviews/" + created.getId())).body(created);
     }
 
     @GetMapping("/{id}/reviews")
-    public ResponseEntity<List<ReviewDTO>> getReviews(@PathVariable Long id) {
+    public ResponseEntity<List<ReviewResponseDTO>> getReviews(@PathVariable Long id) {
         return ResponseEntity.ok(conferenceService.getReviews(id));
     }
 }
-

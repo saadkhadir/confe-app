@@ -1,7 +1,9 @@
 package org.example.conferenceservice.service;
 
-import org.example.conferenceservice.DTO.ConferenceDTO;
-import org.example.conferenceservice.DTO.ReviewDTO;
+import org.example.conferenceservice.DTO.ConferenceRequestDTO;
+import org.example.conferenceservice.DTO.ConferenceResponseDTO;
+import org.example.conferenceservice.DTO.ReviewRequestDTO;
+import org.example.conferenceservice.DTO.ReviewResponseDTO;
 import org.example.conferenceservice.Mappers.ConferenceMapper;
 import org.example.conferenceservice.Mappers.ReviewMapper;
 import org.example.conferenceservice.Repository.ConferenceRepository;
@@ -38,21 +40,21 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public ConferenceDTO create(ConferenceDTO conferenceDTO) {
+    public ConferenceResponseDTO create(ConferenceRequestDTO conferenceDTO) {
         Conference entity = conferenceMapper.toEntity(conferenceDTO);
         Conference saved = conferenceRepository.save(entity);
         return conferenceMapper.toDTO(saved);
     }
 
     @Override
-    public ConferenceDTO getById(Long id) {
+    public ConferenceResponseDTO getById(Long id) {
         Conference c = conferenceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Conference not found: " + id));
         return conferenceMapper.toDTO(c);
     }
 
     @Override
-    public List<ConferenceDTO> getAll() {
+    public List<ConferenceResponseDTO> getAll() {
         return conferenceRepository.findAll().stream()
                 .map(conferenceMapper::toDTO)
                 .collect(Collectors.toList());
@@ -60,7 +62,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional
-    public ConferenceDTO update(Long id, ConferenceDTO conferenceDTO) {
+    public ConferenceResponseDTO update(Long id, ConferenceRequestDTO conferenceDTO) {
         Conference entity = conferenceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Conference not found: " + id));
         // copy non-null properties from DTO to entity
@@ -85,7 +87,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional
-    public ReviewDTO addReview(Long conferenceId, ReviewDTO reviewDTO) {
+    public ReviewResponseDTO addReview(Long conferenceId, ReviewRequestDTO reviewDTO) {
         Conference conference = conferenceRepository.findById(conferenceId)
                 .orElseThrow(() -> new RuntimeException("Conference not found: " + conferenceId));
 
@@ -106,7 +108,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public List<ReviewDTO> getReviews(Long conferenceId) {
+    public List<ReviewResponseDTO> getReviews(Long conferenceId) {
         return reviewRepository.findByConferenceId(conferenceId).stream()
                 .map(reviewMapper::toDTO)
                 .collect(Collectors.toList());
